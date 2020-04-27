@@ -1,0 +1,22 @@
+{
+  "name": "omni-cache",
+  "version": "0.0.1",
+  "description": "Memory cache for server side",
+  "main": "cache.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndreOneti/omni-cache.git"
+  },
+  "author": "AndreOneti",
+  "license": "MIT",
+  "keywords": [
+    "cache",
+    "memory-cache",
+    "memory",
+    "server-cache"
+  ],
+  "bugs": {
+    "url": "https://github.com/AndreOneti/omni-cache/issues"
+  },
+  "homepage": "https://github.com/AndreOneti/omni-cache#readme"
+}
