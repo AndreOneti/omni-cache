@@ -18,5 +18,11 @@
   "bugs": {
     "url": "https://github.com/AndreOneti/omni-cache/issues"
   },
-  "homepage": "https://github.com/AndreOneti/omni-cache#readme"
+  "homepage": "https://github.com/AndreOneti/omni-cache#readme",
+  "dependencies": {
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
 }
