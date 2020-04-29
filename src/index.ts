@@ -1,4 +1,4 @@
-export default class Cache {
+export class Cache {
   private _cache: Object | any | null;
   private _ttl: number | null;
   private _debug: boolean;

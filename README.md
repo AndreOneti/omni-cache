@@ -29,7 +29,7 @@ yarn add omni-cache
 
 ``` javascript
 
-const Cache = require('omni-cache');
+const { Cache } = require('omni-cache');
 
 const cache = new Cache();
 
@@ -50,7 +50,7 @@ cache.clear();                                    // No return
 
 ``` javascript
 
-const Cache = require('omni-cache');
+const { Cache } = require('omni-cache');
 
 const cache = new Cache({
   debug: true,
