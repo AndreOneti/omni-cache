@@ -55,7 +55,7 @@ export default class Cache {
     var oldRecord = this._cache[key];
     if (oldRecord) {
       clearTimeout(oldRecord.timeout);
-      if (!isNaN(oldRecord.expire) && oldRecord.expire < Date.now()) {
+      if (typeof oldRecord.expire == 'number' && oldRecord.expire < Date.now()) {
         canDelete = false;
       }
     } else {
