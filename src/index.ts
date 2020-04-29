@@ -1,11 +1,13 @@
-export class Cache {
-  private _debug: boolean;
+export default class Cache {
   private _cache: Object | any | null;
+  private _ttl: number | null;
+  private _debug: boolean;
   private _size: number;
 
-  constructor() {
+  constructor(options?: OptionalConstructor) {
+    this._debug = options?.debug || false;
     this._cache = Object.create(null);
-    this._debug = false;
+    this._ttl = options?.ttl || null;
     this._size = 0;
   }
 
@@ -16,12 +18,10 @@ export class Cache {
    * @param {number} time expired time in ms.
    * @returns {string} saved value.
    */
-  put(key: string, value: string, time: number): string {
+  put(key: string, value: string, time?: number): string {
+    time = time || this._ttl || undefined;
     if (this._debug) {
-      console.log(`caching: ${key} = ${value} (@${time})`);
-    }
-    if (typeof time !== "undefined" && (typeof time !== "number" || isNaN(time) || time <= 0)) {
-      throw new Error('Cache timeout must be a positive number');
+      console.log(`caching: ${key} = ${value} (@${time || 'indeterminate'})`);
     }
     var oldRecord = this._cache[key];
     if (oldRecord) {
@@ -31,7 +31,7 @@ export class Cache {
     }
     var record: any = {
       value,
-      expire: time + Date.now()
+      expire: time ? time + Date.now() : "indeterminate"
     };
     if (!isNaN(record.expire)) {
       record.timeout = setTimeout(() => {
@@ -95,10 +95,12 @@ export class Cache {
   get(key: string): string | null {
     var data = this._cache[key];
     if (this._debug) {
-      console.log(`getting: ${key} = ${data.value || ""} (@${data.time || ''})`);
+      console.log(`getting: ${key} = ${data.value || ""} (@${data.time || 'indeterminate'})`);
     }
     if (typeof data != "undefined") {
-      if (!isNaN(data.expire) && data.expire > Date.now()) {
+      if (typeof data.expire == 'number' && data.expire > Date.now()) {
+        return data.value;
+      } else if (data.expire == 'indeterminate') {
         return data.value;
       } else {
         this._size--;
@@ -150,4 +152,22 @@ export class Cache {
     }
     return Object.keys(this._cache);
   };
+
+  exportJson(): object {
+    var plainJsCache: any = {};
+    for (var key in this._cache) {
+      var record = this._cache[key];
+      plainJsCache[key] = {
+        value: record.value,
+        expire: record.expire || 'NaN',
+      };
+    }
+
+    return plainJsCache;
+  };
+}
+
+interface OptionalConstructor {
+  debug?: boolean;
+  ttl?: number;
 }
